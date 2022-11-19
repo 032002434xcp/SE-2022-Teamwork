@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.demo.dao.UserDao">
+    <select id="queryUser" resultType="com.lzj.demo.entity.User" >
+        SELECT * from mybatis.user
+    </select>
+
+    <select id="queryUserByUid" resultType="com.lzj.demo.entity.User" >
+        select * from mybatis.user
+        where UID=#{UID}
+    </select>
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="UID"
+            keyColumn="UID" parameterType="com.lzj.demo.entity.User">
+        INSERT INTO
+        mybatis.user(collegeInfluence,coin,`name`,`password`,college,phoneNumber,UID,`dateTime`,towerNumber)
+        VALUE
+        (#{collegeInfluence},#{coin},#{name},#{password},#{college},#{phoneNumber},#{UID},#{dateTime},#{towerNumber})
+    </insert>
+    <update id="updateUser" parameterType="com.lzj.demo.entity.User">
+        update mybatis.user
+        <set>
+            <if test="collegeInfluence!=null">collegeInfluence=#{collegeInfluence},</if>
+            <if test="coin!=null">coin=#{coin},</if>
+            <if test="name!=null">`name`=#{name},</if>
+            <if test="password!=null">`password`=#{password},</if>
+            <if test="college!=null">college=#{college},</if>
+            <if test="phoneNumber!=null">phoneNumber=#{phoneNumber},</if>
+            <if test="dateTime!=null">`dateTime`=#{dateTime},</if>
+            <if test="towerNumber!=null">towerNumber=#{towerNumber},</if>
+        </set>
+        where UID=#{UID}
+    </update>
+    <delete id="deleteUser" parameterType="com.lzj.demo.entity.User">
+        DELETE FROM
+        mybatis.user
+        WHERE
+        UID=#{UID}
+    </delete>
+</mapper>
