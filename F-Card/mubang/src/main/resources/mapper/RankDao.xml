@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.demo.dao.RankDao">
+    <select id="queryRank" resultType="com.lzj.demo.entity.Rank">
+        SELECT * from mybatis.rank
+    </select>
+    <select id="queryRankByName" resultType="com.lzj.demo.entity.Rank">
+        select * from mybatis.rank
+        where name=#{name}
+    </select>
+    <select id="queryRankTop10ByGrade" resultType="com.lzj.demo.entity.Rank">
+        select * from mybatis.rank ORDER BY grade DESC
+    </select>
+    <select id="getCollegeRankTop10" resultType="HashMap">
+        SELECT sum(collegeInfluence),college
+        FROM mybatis.`rank`
+        GROUP BY college
+        ORDER BY sum(collegeInfluence) DESC LIMIT 10
+    </select>
+    <insert id="insertRank" useGeneratedKeys="true" keyProperty="name"
+            keyColumn="name" parameterType="com.lzj.demo.entity.Rank">
+        INSERT INTO
+            mybatis.`rank`(collegeInfluence,grade,`name`,`rank`,college,`dateTime`)
+            VALUE
+            (#{collegeInfluence},#{grade},#{name},#{rank},#{college},#{dateTime});
+    </insert>
+    <update id="updateRank" parameterType="com.lzj.demo.entity.Rank">
+        update mybatis.`rank`
+        <set>
+            <if test="grade!=null">grade=#{grade},</if>
+            <if test="collegeInfluence!=null">collegeInfluence=#{collegeInfluence},</if>
+            <if test="rank!=null">`rank`=#{rank},</if>
+            <if test="college!=null">college=#{college},</if>
+            <if test="dateTime!=null">`dateTime`=#{dateTime},</if>
+        </set>
+        where name=#{name}
+    </update>
+    <update id="updateAllUserRank" parameterType="com.lzj.demo.entity.Rank">
+        update mybatis.`rank`
+        JOIN   (SELECT `rank`.* , @curRank:=@curRank+1 Rankcount FROM `rank`,(SELECT @curRank:=0) ranknum ORDER BY grade DESC ) temp
+        ON  `rank`.name = temp.name
+        <set>
+            `rank`.`rank` = Rankcount;
+        </set>
+    </update>
+    <delete id="deleteRank" parameterType="com.lzj.demo.entity.Rank">
+        DELETE FROM
+            mybatis.rank
+        WHERE
+            name=#{name}
+    </delete>
+</mapper>

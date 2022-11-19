@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.demo.dao.CardDao">
+    <select id="queryCard" resultType="com.lzj.demo.entity.Card">
+        SELECT * from mybatis.card
+    </select>
+    <select id="queryCardByName" resultType="com.lzj.demo.entity.Card">
+        select * from mybatis.card
+        where cardName=#{cardName}
+    </select>
+    <select id="queryCardByRank" resultType="com.lzj.demo.entity.Card">
+        select * from mybatis.card
+        where `rank`=#{rank}
+    </select>
+    <insert id="insertCard" useGeneratedKeys="true" keyProperty="cardName"
+            keyColumn="cardName" parameterType="com.lzj.demo.entity.Card">
+        INSERT INTO
+        mybatis.card(ability1,ability2,ability3,ability4,ability5,cardLevel,
+        experience,`rank`,cardName,introduction,preferance)
+        VALUE
+        (#{ability1},#{ability2},#{ability3},#{ability4},#{ability5},#{cardLevel},
+        #{experience},#{rank},#{cardName},#{introduction},#{preferance})
+    </insert>
+    <update id="updateCard" parameterType="com.lzj.demo.entity.Card">
+        update mybatis.card
+        <set>
+            <if test="ability1!=null">ability1=#{ability1},</if>
+            <if test="ability2!=null">ability2=#{ability2},</if>
+            <if test="ability3!=null">ability3=#{ability3},</if>
+            <if test="ability4!=null">ability4=#{ability4},</if>
+            <if test="ability5!=null">ability5=#{ability5},</if>
+            <if test="cardLevel!=null">cardLevel=#{cardLevel},</if>
+            <if test="experience!=null">experience=#{experience},</if>
+            <if test="rank!=null">`rank`=#{rank},</if>
+            <if test="introduction!=null">introduction=#{introduction},</if>
+            <if test="preferance!=null">preferance=#{preferance}</if>
+        </set>
+        where cardName=#{cardName}
+    </update>
+    <delete id="deleteCard" parameterType="com.lzj.demo.entity.Card">
+        DELETE FROM
+        mybatis.card
+        WHERE
+        cardName=#{cardName}
+    </delete>
+</mapper>
