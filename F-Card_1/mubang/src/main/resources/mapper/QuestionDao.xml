@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.demo.dao.QuestionDao">
+    <select id="queryQuestion" resultType="com.lzj.demo.entity.Question">
+        SELECT * from mybatis.question
+    </select>
+    <select id="queryQuestionByName" resultType="com.lzj.demo.entity.Question">
+        select * from mybatis.question
+        where questionName=#{questionName}
+    </select>
+    <insert id="insertQuestion" useGeneratedKeys="true" keyProperty="questionName"
+            keyColumn="questionName" parameterType="com.lzj.demo.entity.Question">
+        INSERT INTO
+        mybatis.question(questionAbility1,questionAbility2,questionAbility3,questionAbility4,questionAbility5,questionName,preferance)
+        VALUE
+        (#{questionAbility1},#{questionAbility2},#{questionAbility3},#{questionAbility4},#{questionAbility5},#{questionName},#{preferance})
+    </insert>
+    <update id="updateQuestion" parameterType="com.lzj.demo.entity.Question">
+        update mybatis.question
+        <set>
+            <if test="questionAbility1!=null">questionAbility1=#{questionAbility1},</if>
+            <if test="questionAbility2!=null">questionAbility2=#{questionAbility2},</if>
+            <if test="questionAbility3!=null">questionAbility3=#{questionAbility3},</if>
+            <if test="questionAbility4!=null">questionAbility4=#{questionAbility4},</if>
+            <if test="questionAbility5!=null">questionAbility5=#{questionAbility5},</if>
+            <if test="preferance!=null">preferance=#{preferance}</if>
+        </set>
+        where questionName=#{questionName}
+    </update>
+    <delete id="deleteQuestion" parameterType="com.lzj.demo.entity.Question">
+        DELETE FROM
+        mybatis.question
+        WHERE
+        questionName=#{questionName}
+    </delete>
+</mapper>

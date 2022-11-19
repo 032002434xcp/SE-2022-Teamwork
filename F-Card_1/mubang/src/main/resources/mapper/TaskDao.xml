@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzj.demo.dao.TaskDao">
+    <select id="queryUser" resultType="com.lzj.demo.entity.Task" >
+        SELECT * from mybatis.task
+    </select>
+
+    <select id="queryTaskByUid" resultType="com.lzj.demo.entity.Task" >
+        select * from mybatis.task
+        where taskName=#{taskName}
+    </select>
+    <insert id="insertTask" useGeneratedKeys="true" keyProperty="taskName"
+            keyColumn="taskName" parameterType="com.lzj.demo.entity.Task">
+        INSERT INTO
+        mybatis.task(taskName,date,current,end,type,reward)
+        VALUE
+        (#{taskName},#{date},#{current},#{end},#{type},#{reward})
+    </insert>
+    <update id="updateTask" parameterType="com.lzj.demo.entity.Task">
+        update mybatis.task
+        <set>
+            <if test="date!=null">date=#{date},</if>
+            <if test="current!=null">current=#{current},</if>
+            <if test="end!=null">end=#{end},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="reward!=null">reward=#{reward},</if>
+        </set>
+        where taskName=#{taskName}
+    </update>
+    <delete id="deleteTask" parameterType="com.lzj.demo.entity.Task">
+        DELETE FROM
+        mybatis.task
+        WHERE
+            taskName=#{taskName}
+    </delete>
+</mapper>
